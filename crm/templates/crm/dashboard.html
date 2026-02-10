@@ -14,7 +14,19 @@
     <td>{{ lead.name }}</td>
     <td>{{ lead.email }}</td>
     <td>{{ lead.source }}</td>
-    <td>{{ lead.get_status_display }}</td>
+
+    <!-- STATUS UPDATE CELL -->
+    <td>
+      <form method="post" action="{% url 'update_lead_status' lead.id %}">
+        {% csrf_token %}
+        <select name="status" onchange="this.form.submit()">
+          <option value="new" {% if lead.status == 'new' %}selected{% endif %}>New</option>
+          <option value="contacted" {% if lead.status == 'contacted' %}selected{% endif %}>Contacted</option>
+          <option value="converted" {% if lead.status == 'converted' %}selected{% endif %}>Converted</option>
+        </select>
+      </form>
+    </td>
+
     <td>{{ lead.created_at }}</td>
   </tr>
   {% endfor %}
