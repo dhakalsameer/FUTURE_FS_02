@@ -27,7 +27,16 @@ def lead_success(request):
 @login_required
 def dashboard(request):
     leads = Lead.objects.all().order_by('-created_at')
-    return render(request, 'crm/dashboard.html', {'leads': leads})
+
+    total_leads = Lead.objects.count()
+    converted_leads = Lead.objects.filter(status='converted').count()
+
+    return render(request, 'crm/dashboard.html', {
+        'leads': leads,
+        'total_leads': total_leads,
+        'converted_leads': converted_leads,
+    })
+
 
 @login_required
 def update_lead_status(request, lead_id):
